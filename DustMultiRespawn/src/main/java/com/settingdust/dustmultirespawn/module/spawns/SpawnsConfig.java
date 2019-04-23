@@ -10,6 +10,6 @@ public class SpawnsConfig extends Config {
     public SpawnsConfig() {
         super(Paths.get("spawns.conf"),
                 DustMultiRespawn.getInstance().getConfigDir(),
-                TypeToken.of(SpawnsObject.class));
+                TypeToken.of(SpawnsEntity.class));
     }
 }

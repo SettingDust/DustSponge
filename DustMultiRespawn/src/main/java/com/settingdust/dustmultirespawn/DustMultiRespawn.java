@@ -69,7 +69,6 @@ public class DustMultiRespawn {
     @Listener
     public void onInit(GameInitializationEvent event) {
         locale = DustCore.getInstance().getLocaleManager().getLocale(ID);
-        providerManager = new ProviderManager();
 
         isNucleusLoaded = pluginManager.isLoaded(NUCLEUS_ID);
 
@@ -80,13 +79,17 @@ public class DustMultiRespawn {
             } catch (ModulesLoadedException | NoModuleException | UnremovableModuleException e) {
                 e.printStackTrace();
             }
-        } else {
-            providerManager.getMainProvider().get().getSync().setWarp(false);
         }
     }
 
     @Listener
     public void onStarting(GameStartingServerEvent event) {
+        providerManager = new ProviderManager();
+
+        if (!isNucleusLoaded) {
+            providerManager.getMainProvider().get().getSync().setWarp(false);
+        }
+
         Sponge.getEventManager().registerListeners(this, providerManager);
     }
 

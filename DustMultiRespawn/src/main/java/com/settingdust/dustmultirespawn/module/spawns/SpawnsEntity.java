@@ -10,7 +10,7 @@ import java.util.Map;
 
 @ConfigSerializable
 @Data
-public class SpawnsObject {
+public class SpawnsEntity {
     @Setting
     private Map<String, Location> locations = Maps.newHashMap();
 }
