@@ -1,0 +1,21 @@
+# Command
+command.notExist=Spawn isn't exist
+command.onlyPlayer=This command must be excuted by a player
+
+command.spawn.desc=The commands about spawn
+
+command.add.desc=Add spawn
+
+command.remove.desc=Remove spawn
+
+command.list.desc=List spawns
+
+warp.category=Spawns
+
+operation.add.enterName=Please enter the spawn name here
+operation.add.success=Add success
+operation.add.waystone.emptyName=Empty name!
+
+operation.list.empty=Empty list!
+
+operation.remove.success=Remove success

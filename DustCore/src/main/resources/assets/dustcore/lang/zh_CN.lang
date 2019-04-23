@@ -1,0 +1,2 @@
+plugin.currentLanguage="当前语言为：%language_display_language%"
+plugin.currentPlugin="加载 %plugin_name%:%plugin_version%"

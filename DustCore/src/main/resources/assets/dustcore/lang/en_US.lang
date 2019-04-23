@@ -1,0 +1,2 @@
+plugin.currentLanguage="Current language: %language_display_language%"
+plugin.currentPlugin="Loading %plugin_name%:%plugin_version%"
