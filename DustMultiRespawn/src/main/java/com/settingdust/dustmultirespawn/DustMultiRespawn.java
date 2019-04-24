@@ -86,10 +86,6 @@ public class DustMultiRespawn {
     public void onStarting(GameStartingServerEvent event) {
         providerManager = new ProviderManager();
 
-        if (!isNucleusLoaded) {
-            providerManager.getMainProvider().get().getSync().setWarp(false);
-        }
-
         Sponge.getEventManager().registerListeners(this, providerManager);
     }
 

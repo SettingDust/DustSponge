@@ -18,4 +18,4 @@ operation.add.waystone.emptyName=Empty name!
 
 operation.list.empty=Empty list!
 
-operation.remove.success=Remove success
+operation.remove.success=Spawn %name% has been removed

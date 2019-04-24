@@ -29,13 +29,13 @@ public class SpawnsProvider extends ConfigProvider<SpawnsEntity> {
 
     public SpawnsProvider(ProviderManager providerManager) {
         super(new SpawnsConfig(), new SpawnsEntity());
-        if (isSyncWarp) {
-            warpService = NucleusAPI.getWarpService().get();
-        }
 
         spawns = entity.getLocations();
         MainProvider mainProvider = providerManager.getMainProvider();
         this.isSyncWarp = mainProvider.isSyncWarp();
+        if (isSyncWarp) {
+            warpService = NucleusAPI.getWarpService().get();
+        }
 
         Sponge.getEventManager().registerListeners(plugin, new SpawnSignHandler(mainProvider, this));
         Sponge.getEventManager().registerListeners(plugin, new SpawnWaystoneHandler(mainProvider, this));

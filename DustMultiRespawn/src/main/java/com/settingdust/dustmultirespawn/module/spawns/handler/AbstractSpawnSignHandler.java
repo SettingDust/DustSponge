@@ -67,27 +67,28 @@ public abstract class AbstractSpawnSignHandler {
         Map<String, Location> locations = spawnsProvider.getLocations();
         for (String key : locations.keySet()) {
             Location location = locations.get(key);
-            if (location.getPosition().distance(blockSnapshot.getLocation().get().getPosition()) < 3) {
+            if (location.getPosition().distance(blockSnapshot.getLocation().get().getPosition()) < 1) {
                 locations.remove(key);
+                if (player.hasPermission("dust.spawn.remove")) {
+                    player.sendMessage(Text.builder()
+                            .color(TextColors.GREEN)
+                            .append(Text.of(locale
+                                    .getNode("operation")
+                                    .getNode("remove")
+                                    .getNode("success").getString().replaceAll("%name%", key))
+                            ).build()
+                    );
+                } else {
+                    Sponge.getServer().getBroadcastChannel().send(Text.builder()
+                            .color(TextColors.RED)
+                            .append(Text.of(locale
+                                    .getNode("operation")
+                                    .getNode("remove")
+                                    .getNode("success").getString().replaceAll("%name%", key))
+                            ).build());
+                }
+                break;
             }
-        }
-        if (player.hasPermission("dust.spawn.remove")) {
-            player.sendMessage(Text.builder()
-                    .color(TextColors.GREEN)
-                    .append(Text.of(locale
-                            .getNode("operation")
-                            .getNode("remove")
-                            .getNode("success").getString())
-                    ).build()
-            );
-        } else {
-            Sponge.getServer().getBroadcastChannel().send(Text.builder()
-                    .color(TextColors.RED)
-                    .append(Text.of(locale
-                            .getNode("operation")
-                            .getNode("remove")
-                            .getNode("success").getString())
-                    ).build());
         }
     }
 

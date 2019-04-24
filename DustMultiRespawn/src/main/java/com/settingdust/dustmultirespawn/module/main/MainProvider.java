@@ -2,6 +2,7 @@ package com.settingdust.dustmultirespawn.module.main;
 
 import com.google.common.reflect.TypeToken;
 import com.settingdust.dustcore.api.ConfigProvider;
+import com.settingdust.dustmultirespawn.DustMultiRespawn;
 import com.settingdust.dustmultirespawn.module.main.entity.MainEntity;
 import com.settingdust.dustmultirespawn.module.main.entity.SyncEntity;
 import lombok.Getter;
@@ -18,6 +19,9 @@ public class MainProvider extends ConfigProvider<MainEntity> {
         super(new MainConfig(), new MainEntity());
         this.load();
         syncWarp = entity.getSync().isWarp();
+        if (!DustMultiRespawn.getInstance().isNucleusLoaded()) {
+            this.getSync().setWarp(false);
+        }
     }
 
     @Override

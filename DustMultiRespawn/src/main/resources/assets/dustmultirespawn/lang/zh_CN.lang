@@ -18,4 +18,4 @@ operation.add.waystone.emptyName=请输入名字！
 
 operation.list.empty=列表为空
 
-operation.remove.success=复活点被移除
+operation.remove.success=复活点%name%被移除

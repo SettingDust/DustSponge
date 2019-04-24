@@ -20,6 +20,7 @@ import java.nio.file.Path;
 @Plugin(
         id = DustCore.ID,
         name = DustCore.NAME,
+        version = "1.2",
         authors = {
                 "SettingDust"
         }
