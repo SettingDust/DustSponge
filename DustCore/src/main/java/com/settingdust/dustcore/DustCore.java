@@ -1,6 +1,7 @@
 package com.settingdust.dustcore;
 
 import com.google.inject.Inject;
+import com.settingdust.dustcore.api.IDustCore;
 import com.settingdust.dustcore.locale.LocaleManager;
 import com.settingdust.dustcore.module.ProviderManager;
 import lombok.Getter;
@@ -20,12 +21,12 @@ import java.nio.file.Path;
 @Plugin(
         id = DustCore.ID,
         name = DustCore.NAME,
-        version = "1.2",
+        version = "1.3",
         authors = {
                 "SettingDust"
         }
 )
-public class DustCore {
+public class DustCore implements IDustCore {
     public static final String ID = "dustcore";
     public static final String NAME = "DustCore";
 

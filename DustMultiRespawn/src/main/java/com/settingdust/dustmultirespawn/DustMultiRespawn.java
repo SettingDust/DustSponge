@@ -24,13 +24,13 @@ import java.nio.file.Path;
 @Plugin(
         id = DustMultiRespawn.ID,
         name = "DustMultiRespawn",
-        version = "1.1",
+        version = "1.3",
         authors = {
                 "SettingDust"
         },
         description = "Respawn at the closest point",
         dependencies = {
-                @Dependency(id = "dustcore"),
+                @Dependency(id = "dustcore", version = "1.3"),
                 @Dependency(id = DustMultiRespawn.NUCLEUS_ID, optional = true)
         }
 )

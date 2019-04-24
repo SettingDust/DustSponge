@@ -1,15 +1,9 @@
-package com.settingdust.dustcore.module;
+package com.settingdust.dustdeathpenalty.module;
 
 import com.google.common.collect.Sets;
 import com.settingdust.dustcore.api.AbstractProviderManager;
-import com.settingdust.dustcore.api.ConfigProvider;
-import com.settingdust.dustcore.module.main.MainProvider;
+import com.settingdust.dustdeathpenalty.module.main.MainProvider;
 import lombok.Getter;
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.GameReloadEvent;
-import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
-
-import java.util.Set;
 
 public class ProviderManager extends AbstractProviderManager {
     @Getter

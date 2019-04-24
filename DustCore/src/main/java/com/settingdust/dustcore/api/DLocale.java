@@ -1,8 +1,5 @@
 package com.settingdust.dustcore.api;
 
-import com.settingdust.dustcore.DustCore;
-import com.settingdust.dustcore.api.Config;
-import com.settingdust.dustcore.api.ILocale;
 import com.settingdust.dustcore.utils.FileUtils;
 import com.settingdust.dustcore.utils.PlaceholderUtils;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -11,7 +8,10 @@ import org.spongepowered.api.config.ConfigManager;
 import org.spongepowered.api.config.ConfigRoot;
 import org.spongepowered.api.plugin.PluginContainer;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;

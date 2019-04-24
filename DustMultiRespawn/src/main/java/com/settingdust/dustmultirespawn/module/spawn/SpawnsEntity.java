@@ -1,4 +1,4 @@
-package com.settingdust.dustmultirespawn.module.spawns;
+package com.settingdust.dustmultirespawn.module.spawn;
 
 import com.google.common.collect.Maps;
 import lombok.Data;

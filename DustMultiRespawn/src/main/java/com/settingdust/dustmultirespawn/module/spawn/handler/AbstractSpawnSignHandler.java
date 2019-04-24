@@ -1,4 +1,4 @@
-package com.settingdust.dustmultirespawn.module.spawns.handler;
+package com.settingdust.dustmultirespawn.module.spawn.handler;
 
 import com.settingdust.dustmultirespawn.DustMultiRespawn;
 import com.settingdust.dustmultirespawn.module.spawns.SpawnsProvider;
