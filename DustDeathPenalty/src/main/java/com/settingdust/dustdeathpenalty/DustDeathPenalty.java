@@ -26,7 +26,7 @@ import java.nio.file.Path;
                 "SettingDust"
         },
         dependencies = {
-                @Dependency(id = "DustCore")
+                @Dependency(id = "dustcore", version = "1.3")
         }
 )
 public class DustDeathPenalty {

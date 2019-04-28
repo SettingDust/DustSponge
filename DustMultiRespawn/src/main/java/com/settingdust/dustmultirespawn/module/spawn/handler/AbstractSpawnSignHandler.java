@@ -1,7 +1,7 @@
 package com.settingdust.dustmultirespawn.module.spawn.handler;
 
 import com.settingdust.dustmultirespawn.DustMultiRespawn;
-import com.settingdust.dustmultirespawn.module.spawns.SpawnsProvider;
+import com.settingdust.dustmultirespawn.module.spawn.SpawnsProvider;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockSnapshot;

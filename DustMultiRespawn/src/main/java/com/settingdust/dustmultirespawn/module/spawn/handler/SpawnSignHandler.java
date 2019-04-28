@@ -1,8 +1,8 @@
-package com.settingdust.dustmultirespawn.module.spawns.handler;
+package com.settingdust.dustmultirespawn.module.spawn.handler;
 
 import com.google.common.collect.Maps;
 import com.settingdust.dustmultirespawn.module.main.MainProvider;
-import com.settingdust.dustmultirespawn.module.spawns.SpawnsProvider;
+import com.settingdust.dustmultirespawn.module.spawn.SpawnsProvider;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;

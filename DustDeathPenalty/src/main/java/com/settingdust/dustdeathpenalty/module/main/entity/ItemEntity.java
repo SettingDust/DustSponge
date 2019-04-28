@@ -1,8 +1,11 @@
 package com.settingdust.dustdeathpenalty.module.main.entity;
 
+import com.google.common.collect.Lists;
 import lombok.Data;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+
+import java.util.List;
 
 @ConfigSerializable
 @Data
@@ -13,6 +16,10 @@ public class ItemEntity {
     private boolean equipment = true;
     @Setting(comment = "Drop chance")
     private double chance = 0.1D;
-    @Setting(comment = "The type don't drop")
-    private String[] noDrops = {};
+    @Setting(comment = "The type don't drop, use /itemdb to get")
+    private List<String> whitelist = Lists.newArrayList();
+
+    public ItemEntity() {
+        whitelist.add("minecraft:torch");
+    }
 }

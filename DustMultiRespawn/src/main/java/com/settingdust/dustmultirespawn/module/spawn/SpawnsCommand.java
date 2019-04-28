@@ -1,7 +1,6 @@
 package com.settingdust.dustmultirespawn.module.spawn;
 
 import com.settingdust.dustmultirespawn.DustMultiRespawn;
-import com.settingdust.dustmultirespawn.module.spawns.SpawnsProvider;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;

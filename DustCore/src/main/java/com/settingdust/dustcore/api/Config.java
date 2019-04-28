@@ -13,6 +13,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -55,6 +56,10 @@ public class Config implements IConfig {
 
     public void save(Object value) throws ObjectMappingException, IOException {
         if (configPath != null) {
+            File file = configPath.toFile().getParentFile();
+            if (!file.exists()) {
+                file.mkdirs();
+            }
             if (typeToken != null) {
                 configLoader.save(rootNode.setValue(typeToken, value));
             } else {
@@ -66,7 +71,7 @@ public class Config implements IConfig {
     public void load(Path configPath) {
         this.configLoader = HoconConfigurationLoader.builder().setPath(configPath).build();
         try {
-            this.rootNode=this.configLoader.load();
+            this.rootNode = this.configLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }

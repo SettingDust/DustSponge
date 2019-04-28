@@ -30,7 +30,7 @@ import java.nio.file.Path;
         },
         description = "Respawn at the closest point",
         dependencies = {
-                @Dependency(id = "dustcore", version = "1.3"),
+                @Dependency(id = "dustcore", version = "[1.3,]"),
                 @Dependency(id = DustMultiRespawn.NUCLEUS_ID, optional = true)
         }
 )

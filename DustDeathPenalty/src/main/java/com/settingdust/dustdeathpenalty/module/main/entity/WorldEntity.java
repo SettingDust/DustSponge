@@ -1,23 +1,22 @@
 package com.settingdust.dustdeathpenalty.module.main.entity;
 
-import com.google.common.collect.Maps;
 import lombok.Data;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
-import java.util.Map;
-
 @ConfigSerializable
 @Data
-public class MainEntity {
+public class WorldEntity {
     @Setting
     private ItemEntity item = new ItemEntity();
     @Setting
     private ExpEntity exp = new ExpEntity();
-    @Setting(comment = "The key is world's name")
-    private Map<String, WorldEntity> world = Maps.newHashMap();
 
-    public MainEntity() {
-        world.put("world", new WorldEntity());
+    public WorldEntity() {
+    }
+
+    public WorldEntity(ItemEntity item, ExpEntity exp) {
+        this.item = item;
+        this.exp = exp;
     }
 }

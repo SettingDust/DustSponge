@@ -1,18 +1,16 @@
-package com.settingdust.dustmultirespawn.module.spawns.handler;
+package com.settingdust.dustmultirespawn.module.spawn.handler;
 
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
 import com.settingdust.dustmultirespawn.module.main.MainProvider;
-import com.settingdust.dustmultirespawn.module.spawns.SpawnsProvider;
+import com.settingdust.dustmultirespawn.module.spawn.SpawnsProvider;
+import com.settingdust.dustmultirespawn.module.spawn.handler.AbstractSpawnSignHandler;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.data.DataQuery;
-import org.spongepowered.api.data.MemoryDataView;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.MoveEntityEvent;
-import org.spongepowered.api.event.item.inventory.InteractInventoryEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 

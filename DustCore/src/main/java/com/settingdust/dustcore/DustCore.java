@@ -21,7 +21,7 @@ import java.nio.file.Path;
 @Plugin(
         id = DustCore.ID,
         name = DustCore.NAME,
-        version = "1.3",
+        version = "1.4",
         authors = {
                 "SettingDust"
         }
@@ -35,7 +35,7 @@ public class DustCore implements IDustCore {
     private Logger logger;
 
     @Getter
-    private static DustCore instance;
+    private static IDustCore instance;
 
     @Inject
     @ConfigDir(sharedRoot = false)
