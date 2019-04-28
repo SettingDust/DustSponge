@@ -73,7 +73,12 @@ public class SpawnsProvider extends ConfigProvider<SpawnsEntity> {
     }
 
     public void add(String name, Location<World> location) {
-        spawns.put(name, location);
+        spawns.put(name, new Location<>(
+                location.getExtent(),
+                location.getX(),
+                location.getY(),
+                location.getZ()
+        ));
         if (isSyncWarp) {
             warpService.setWarp(name, location, location.getPosition());
             warpService.setWarpCategory(name, locale

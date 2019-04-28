@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Locale;
+import java.util.Optional;
 
 @ConfigSerializable
 public class Config implements IConfig {
@@ -27,20 +28,21 @@ public class Config implements IConfig {
 
     private ConfigurationOptions options;
 
-    private TypeToken typeToken = null;
+    private Optional<TypeToken> typeToken;
 
     private ConfigurationNode rootNode;
 
     public Config(Path configPath, Path configDir) {
         this.configPath = configDir.resolve(configPath);
         this.load(this.configPath);
+        this.typeToken = Optional.empty();
     }
 
     public Config(Path configPath, Path configDir, TypeToken typeToken) {
         this.configPath = configDir.resolve(configPath);
         this.load(this.configPath);
 
-        this.typeToken = typeToken;
+        this.typeToken = Optional.of(typeToken);
 
         // Register serializers
         TypeSerializerCollection serializers = TypeSerializers.getDefaultSerializers().newChild();
@@ -60,8 +62,8 @@ public class Config implements IConfig {
             if (!file.exists()) {
                 file.mkdirs();
             }
-            if (typeToken != null) {
-                configLoader.save(rootNode.setValue(typeToken, value));
+            if (typeToken.isPresent()) {
+                configLoader.save(rootNode.setValue(typeToken.get(), value));
             } else {
                 configLoader.save(rootNode.setValue(value));
             }

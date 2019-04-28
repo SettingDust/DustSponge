@@ -21,12 +21,12 @@ import java.nio.file.Path;
 @Plugin(
         id = DustDeathPenalty.ID,
         name = "DustDeathPenalty",
-        version = "1.0",
+        version = "1.2",
         authors = {
                 "SettingDust"
         },
         dependencies = {
-                @Dependency(id = "dustcore", version = "1.3")
+                @Dependency(id = "dustcore", version = "1.4")
         }
 )
 public class DustDeathPenalty {
