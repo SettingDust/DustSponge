@@ -14,6 +14,8 @@ public class MainEntity {
     private ItemEntity item = new ItemEntity();
     @Setting
     private ExpEntity exp = new ExpEntity();
+    @Setting
+    private boolean isSendMsg = false;
     @Setting(comment = "The key is world's name")
     private Map<String, WorldEntity> world = Maps.newHashMap();
 

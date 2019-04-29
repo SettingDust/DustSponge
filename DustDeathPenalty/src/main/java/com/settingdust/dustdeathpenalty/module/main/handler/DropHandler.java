@@ -2,6 +2,8 @@ package com.settingdust.dustdeathpenalty.module.main.handler;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.settingdust.dustcore.DustCore;
+import com.settingdust.dustdeathpenalty.DustDeathPenalty;
 import com.settingdust.dustdeathpenalty.module.main.MainProvider;
 import com.settingdust.dustdeathpenalty.module.main.entity.ExpEntity;
 import com.settingdust.dustdeathpenalty.module.main.entity.ItemEntity;
@@ -23,18 +25,28 @@ import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.entity.PlayerInventory;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.action.HoverAction;
+import org.spongepowered.api.text.action.TextActions;
+import org.spongepowered.api.text.chat.ChatTypes;
+import org.spongepowered.api.text.format.TextColor;
+import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.util.Color;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class DropHandler {
 
     private final MainEntity mainEntity;
+    private final DustDeathPenalty plugin;
 
     public DropHandler(MainProvider mainProvider) {
         this.mainEntity = mainProvider.get();
+        this.plugin = DustDeathPenalty.getInstance();
     }
 
     @Listener
@@ -52,12 +64,31 @@ public class DropHandler {
             if (player.hasPermission("dust.death.drop.disable")) {
             }
 
+            List<ItemStackSnapshot> dropItems = dropItems(player, itemDropConfig);
             if (itemDropConfig.isEnable()) {
-                spawnItems(dropItems(player, itemDropConfig), player.getLocation());
+                spawnItems(dropItems, player.getLocation());
             }
 
+            int dropExp = dropExperience(player, expDropConfig);
             if (expDropConfig.isEnable()) {
-                world.spawnEntity(createExperienceOrb(dropExperience(player, expDropConfig), player.getLocation()));
+                world.spawnEntity(createExperienceOrb(dropExp, player.getLocation()));
+            }
+            if (dropConfig.isSendMsg()) {
+                List<Text> dropItemTexts = Lists.newArrayList();
+                for (ItemStackSnapshot dropItem : dropItems) {
+                    dropItemTexts.add(Text.of(dropItem.getTranslation().get() + "x" + dropItem.getQuantity()));
+                }
+
+                player.sendMessage(Text.builder()
+                        .append(Text.of(plugin.getLocale()
+                                .getNode("message")
+                                .getNode("drop").getString()
+                                .replaceAll("%exp%", String.valueOf(dropExp))
+                                .replaceAll("%item_count%", String.valueOf(dropItems.size()))
+                                .replaceAll("&", "§")
+                        ))
+                        .onHover(TextActions.showText(Text.joinWith(Text.NEW_LINE, dropItemTexts))).build()
+                );
             }
         }
     }
@@ -66,9 +97,9 @@ public class DropHandler {
         return location.getExtent().createEntity(
                 type,
                 location.add(
-                        Math.random() * 2,
                         Math.random() * 1.5,
-                        Math.random() * 2
+                        Math.random(),
+                        Math.random() * 1.5
                 ).getPosition()
         );
     }
@@ -78,7 +109,7 @@ public class DropHandler {
         if (mainEntity.getWorld().containsKey(worldName)) {
             worldEntity = mainEntity.getWorld().get(worldName);
         } else {
-            worldEntity = new WorldEntity(mainEntity.getItem(), mainEntity.getExp());
+            worldEntity = new WorldEntity(mainEntity.getItem(), mainEntity.getExp(), mainEntity.isSendMsg());
         }
         return worldEntity;
     }

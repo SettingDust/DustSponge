@@ -37,6 +37,8 @@ public class SpawnsProvider extends ConfigProvider<SpawnsEntity> {
             warpService = NucleusAPI.getWarpService().get();
         }
 
+        new SpawnsCommand(this);
+
         Sponge.getEventManager().registerListeners(plugin, new SpawnSignHandler(mainProvider, this));
         Sponge.getEventManager().registerListeners(plugin, new SpawnWaystoneHandler(mainProvider, this));
         Sponge.getEventManager().registerListeners(plugin, new RespawnHandler(this));
@@ -55,7 +57,6 @@ public class SpawnsProvider extends ConfigProvider<SpawnsEntity> {
         } catch (ObjectMappingException | IOException e) {
             e.printStackTrace();
         }
-        new SpawnsCommand(this);
     }
 
     public Location<World> getSpawnLocation(Location location) {

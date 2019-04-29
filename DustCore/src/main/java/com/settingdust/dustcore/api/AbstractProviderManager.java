@@ -23,6 +23,12 @@ public abstract class AbstractProviderManager {
 
     protected abstract void load();
 
+    private void reload() {
+        for (ConfigProvider provider : providers) {
+            provider.load();
+        }
+    }
+
     @Listener
     public void onStopping(GameStoppingServerEvent event) {
         this.save();
@@ -30,6 +36,6 @@ public abstract class AbstractProviderManager {
 
     @Listener
     public void onReload(GameReloadEvent event) {
-        this.load();
+        this.reload();
     }
 }

@@ -11,12 +11,15 @@ public class WorldEntity {
     private ItemEntity item = new ItemEntity();
     @Setting
     private ExpEntity exp = new ExpEntity();
+    @Setting(comment = "Send the drops to player")
+    private boolean isSendMsg = false;
 
     public WorldEntity() {
     }
 
-    public WorldEntity(ItemEntity item, ExpEntity exp) {
+    public WorldEntity(ItemEntity item, ExpEntity exp, boolean isSendMsg) {
         this.item = item;
         this.exp = exp;
+        this.isSendMsg = isSendMsg;
     }
 }

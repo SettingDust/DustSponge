@@ -9,6 +9,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ExpEntity {
     @Setting(comment = "Whether drop exp")
     private boolean enable = true;
-    @Setting(comment = "Drop rate, lose half of it")
+    @Setting(comment = "Drop rate")
     private double rate = 0.1D;
+    @Setting(comment = "Lose half of drop")
+    private boolean lose = true;
 }
