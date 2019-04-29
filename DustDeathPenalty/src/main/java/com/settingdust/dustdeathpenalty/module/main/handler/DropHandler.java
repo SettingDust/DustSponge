@@ -2,7 +2,6 @@ package com.settingdust.dustdeathpenalty.module.main.handler;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.settingdust.dustcore.DustCore;
 import com.settingdust.dustdeathpenalty.DustDeathPenalty;
 import com.settingdust.dustdeathpenalty.module.main.MainProvider;
 import com.settingdust.dustdeathpenalty.module.main.entity.ExpEntity;
@@ -26,17 +25,11 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.entity.PlayerInventory;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.action.HoverAction;
 import org.spongepowered.api.text.action.TextActions;
-import org.spongepowered.api.text.chat.ChatTypes;
-import org.spongepowered.api.text.format.TextColor;
-import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.Color;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class DropHandler {
