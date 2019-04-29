@@ -55,33 +55,32 @@ public class DropHandler {
             event.setKeepInventory(true);
 
             if (player.hasPermission("dust.death.drop.disable")) {
-            }
-
-            List<ItemStackSnapshot> dropItems = dropItems(player, itemDropConfig);
-            if (itemDropConfig.isEnable()) {
-                spawnItems(dropItems, player.getLocation());
-            }
-
-            int dropExp = dropExperience(player, expDropConfig);
-            if (expDropConfig.isEnable()) {
-                world.spawnEntity(createExperienceOrb(dropExp, player.getLocation()));
-            }
-            if (dropConfig.isSendMsg()) {
-                List<Text> dropItemTexts = Lists.newArrayList();
-                for (ItemStackSnapshot dropItem : dropItems) {
-                    dropItemTexts.add(Text.of(dropItem.getTranslation().get() + "x" + dropItem.getQuantity()));
+                List<ItemStackSnapshot> dropItems = dropItems(player, itemDropConfig);
+                if (itemDropConfig.isEnable()) {
+                    spawnItems(dropItems, player.getLocation());
                 }
 
-                player.sendMessage(Text.builder()
-                        .append(Text.of(plugin.getLocale()
-                                .getNode("message")
-                                .getNode("drop").getString()
-                                .replaceAll("%exp%", String.valueOf(dropExp))
-                                .replaceAll("%item_count%", String.valueOf(dropItems.size()))
-                                .replaceAll("&", "§")
-                        ))
-                        .onHover(TextActions.showText(Text.joinWith(Text.NEW_LINE, dropItemTexts))).build()
-                );
+                int dropExp = dropExperience(player, expDropConfig);
+                if (expDropConfig.isEnable()) {
+                    world.spawnEntity(createExperienceOrb(dropExp, player.getLocation()));
+                }
+                if (dropConfig.isSendMsg()) {
+                    List<Text> dropItemTexts = Lists.newArrayList();
+                    for (ItemStackSnapshot dropItem : dropItems) {
+                        dropItemTexts.add(Text.of(dropItem.getTranslation().get() + "x" + dropItem.getQuantity()));
+                    }
+
+                    player.sendMessage(Text.builder()
+                            .append(Text.of(plugin.getLocale()
+                                    .getNode("message")
+                                    .getNode("drop").getString()
+                                    .replaceAll("%exp%", String.valueOf(dropExp))
+                                    .replaceAll("%item_count%", String.valueOf(dropItems.size()))
+                                    .replaceAll("&", "§")
+                            ))
+                            .onHover(TextActions.showText(Text.joinWith(Text.NEW_LINE, dropItemTexts))).build()
+                    );
+                }
             }
         }
     }
