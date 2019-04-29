@@ -54,7 +54,7 @@ public class DropHandler {
 
             event.setKeepInventory(true);
 
-            if (player.hasPermission("dust.death.drop.disable")) {
+            if (!player.hasPermission("dust.death.drop.disable")) {
                 List<ItemStackSnapshot> dropItems = dropItems(player, itemDropConfig);
                 if (itemDropConfig.isEnable()) {
                     spawnItems(dropItems, player.getLocation());
