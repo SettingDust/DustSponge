@@ -10,11 +10,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>DustDeathPenalty</artifactId>
+    <artifactId>BlockRegen</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>DustDeathPenalty</name>
+    <name>DustCore</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

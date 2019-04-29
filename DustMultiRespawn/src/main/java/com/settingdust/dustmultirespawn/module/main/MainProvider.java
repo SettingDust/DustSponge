@@ -17,16 +17,10 @@ public class MainProvider extends ConfigProvider<MainEntity> {
 
     public MainProvider() {
         super(new MainConfig(), new MainEntity());
-        this.load();
         syncWarp = entity.getSync().isWarp();
         if (!DustMultiRespawn.getInstance().isNucleusLoaded()) {
             this.getSync().setWarp(false);
         }
-    }
-
-    @Override
-    public MainEntity get() {
-        return entity;
     }
 
     @Override

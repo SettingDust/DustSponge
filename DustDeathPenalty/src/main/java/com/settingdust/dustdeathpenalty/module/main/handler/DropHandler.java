@@ -34,11 +34,11 @@ import java.util.stream.Collectors;
 
 public class DropHandler {
 
-    private final MainEntity mainEntity;
+    private final MainProvider mainProvider;
     private final DustDeathPenalty plugin;
 
     public DropHandler(MainProvider mainProvider) {
-        this.mainEntity = mainProvider.get();
+        this.mainProvider = mainProvider;
         this.plugin = DustDeathPenalty.getInstance();
     }
 
@@ -97,6 +97,7 @@ public class DropHandler {
     }
 
     private WorldEntity getDropConfig(String worldName) {
+        MainEntity mainEntity = mainProvider.get();
         WorldEntity worldEntity;
         if (mainEntity.getWorld().containsKey(worldName)) {
             worldEntity = mainEntity.getWorld().get(worldName);

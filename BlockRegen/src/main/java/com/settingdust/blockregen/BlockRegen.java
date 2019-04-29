@@ -1,9 +1,9 @@
-package com.settingdust.dustdeathpenalty;
+package com.settingdust.blockregen;
 
 import com.google.inject.Inject;
+import com.settingdust.blockregen.module.ProviderManager;
 import com.settingdust.dustcore.DustCore;
 import com.settingdust.dustcore.api.DLocale;
-import com.settingdust.dustdeathpenalty.module.ProviderManager;
 import lombok.Getter;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.slf4j.Logger;
@@ -19,24 +19,22 @@ import org.spongepowered.api.plugin.Plugin;
 import java.nio.file.Path;
 
 @Plugin(
-        id = DustDeathPenalty.ID,
-        name = "DustDeathPenalty",
-        version = "1.5",
+        id = BlockRegen.ID,
+        name = "BlockRegen",
+        version = "1.0",
         authors = {
                 "SettingDust"
         },
-        description = "Death with penalty",
+        description = "Regen blocks",
         dependencies = {
-                @Dependency(id = "dustcore", version = "1.4")
+                @Dependency(id = "dustcore", version = "[1.4,]"),
         }
 )
-public class DustDeathPenalty {
-    public static final String ID = "dustdeathpenalty";
-    @Getter
-    private static DustDeathPenalty instance;
+public class BlockRegen {
+    public static final String ID = "blockregen";
 
-    @Inject
     @Getter
+    @Inject
     private Logger logger;
 
     @Inject
@@ -44,7 +42,11 @@ public class DustDeathPenalty {
     @ConfigDir(sharedRoot = false)
     private Path configDir;
 
+    @Getter
+    private static BlockRegen instance;
+
     private DLocale locale;
+
     @Getter
     private ProviderManager providerManager;
 
