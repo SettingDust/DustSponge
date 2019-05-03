@@ -2,6 +2,7 @@ package com.settingdust.blockregen.module.main;
 
 import com.google.common.collect.Maps;
 import lombok.Data;
+import lombok.Getter;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.spongepowered.api.block.BlockType;
@@ -9,7 +10,7 @@ import org.spongepowered.api.block.BlockTypes;
 
 import java.util.Map;
 
-@Data
+@Getter
 @ConfigSerializable
 public class MainEntity {
     @Setting(comment = "Default blocks", value = "default")
@@ -17,6 +18,9 @@ public class MainEntity {
 
     @Setting(comment = "Different worlds' config")
     private Map<String, Map<BlockType, Block>> worlds = Maps.newHashMap();
+
+    @Setting(comment = "Whether save in file")
+    private boolean saveData = true;
 
     public MainEntity() {
         Block defaultOre = new Block();

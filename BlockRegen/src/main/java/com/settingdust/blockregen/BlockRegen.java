@@ -21,7 +21,7 @@ import java.nio.file.Path;
 @Plugin(
         id = BlockRegen.ID,
         name = "BlockRegen",
-        version = "1.0",
+        version = "1.1",
         authors = {
                 "SettingDust"
         },
