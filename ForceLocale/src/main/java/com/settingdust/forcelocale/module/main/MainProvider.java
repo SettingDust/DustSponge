@@ -4,8 +4,8 @@ import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
 import com.settingdust.dustcore.api.Config;
 import com.settingdust.dustcore.api.ConfigProvider;
-import com.settingdust.dustcore.api.IConfig;
 import com.settingdust.forcelocale.ForceLocale;
+import lombok.Getter;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.Sponge;
 
@@ -17,8 +17,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public class MainProvider extends ConfigProvider<MainEntity> {
-    private final Set<IConfig> configs = Sets.newHashSet();
-    private final TypeToken<MainEntity> typeToken = TypeToken.of(MainEntity.class);
+    @Getter
+    private Set<MainEntity> entities;
 
     public MainProvider() {
         super(new Config(
@@ -32,11 +32,9 @@ public class MainProvider extends ConfigProvider<MainEntity> {
 
     @Override
     public void load() {
-        this.config = new Config(
-                Paths.get("config.conf"),
-                ForceLocale.getInstance().getConfigDir(),
-                typeToken
-        );
+        final TypeToken<MainEntity> typeToken = TypeToken.of(MainEntity.class);
+        final Path configDir = ForceLocale.getInstance().getConfigDir();
+        this.config = new Config(Paths.get("config.conf"), configDir, typeToken);
 
         try {
             if (Objects.isNull(config.getRoot().getValue())) {
@@ -48,30 +46,19 @@ public class MainProvider extends ConfigProvider<MainEntity> {
         } catch (ObjectMappingException | IOException e) {
             e.printStackTrace();
         }
-
-        Path configDir = ForceLocale.getInstance().getConfigDir();
         try {
+            entities = Sets.newHashSet();
             Files.list(configDir)
-                    .filter(path -> path.endsWith(".conf"))
+                    .filter(path -> path.toString().endsWith(".conf"))
                     .forEach(path -> {
-                        Config config = new Config(
-                                path,
-                                ForceLocale.getInstance().getConfigDir(),
-                                typeToken
-                        );
-
+                        Config config = new Config(path, configDir, typeToken);
                         try {
-                            if (Objects.isNull(config.getRoot().getValue())) {
-                                this.entity = new MainEntity();
-                            } else {
-                                this.entity = config.getRoot().getValue(TypeToken.of(MainEntity.class));
-                            }
-                            config.save(this.entity);
+                            MainEntity entity = config.getRoot().getValue(TypeToken.of(MainEntity.class));
+                            entities.add(entity);
+                            config.save(entity);
                         } catch (ObjectMappingException | IOException e) {
                             e.printStackTrace();
                         }
-
-                        configs.add(config);
                     });
         } catch (IOException e) {
             e.printStackTrace();

@@ -11,7 +11,6 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +25,7 @@ public class Config implements IConfig {
     @Getter
     private final Path configPath;
 
+    @Getter
     private ConfigurationOptions options;
 
     private Optional<TypeToken> typeToken;
@@ -34,26 +34,16 @@ public class Config implements IConfig {
 
     public Config(Path configPath, Path configDir) {
         this.configPath = configDir.resolve(configPath);
+        this.options = ConfigurationOptions.defaults();
         this.load(this.configPath);
         this.typeToken = Optional.empty();
     }
 
     public Config(Path configPath, Path configDir, TypeToken typeToken) {
         this.configPath = configDir.resolve(configPath);
+        this.options = ConfigurationOptions.defaults();
         this.load(this.configPath);
-
         this.typeToken = Optional.of(typeToken);
-
-        // Register serializers
-        TypeSerializerCollection serializers = TypeSerializers.getDefaultSerializers().newChild();
-        serializers.registerType(TypeToken.of(Locale.class), new LocaleSerializer());
-        options = ConfigurationOptions.defaults().setSerializers(serializers);
-
-        try {
-            rootNode = this.configLoader.load(options);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void save(Object value) throws ObjectMappingException, IOException {
@@ -71,9 +61,15 @@ public class Config implements IConfig {
     }
 
     public void load(Path configPath) {
+        // Register serializers
+        TypeSerializerCollection serializers = options.getSerializers();
+        serializers.registerType(TypeToken.of(Locale.class), new LocaleSerializer());
+        options.setSerializers(serializers);
+
         this.configLoader = HoconConfigurationLoader.builder().setPath(configPath).build();
+
         try {
-            this.rootNode = this.configLoader.load();
+            this.rootNode = this.configLoader.load(options);
         } catch (IOException e) {
             e.printStackTrace();
         }

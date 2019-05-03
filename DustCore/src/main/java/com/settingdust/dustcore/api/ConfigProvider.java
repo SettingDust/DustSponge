@@ -8,7 +8,7 @@ public abstract class ConfigProvider<T> implements IProvider<T> {
     protected IConfig config;
     protected T entity;
 
-    protected ConfigProvider(IConfig config, T entity) {
+    public ConfigProvider(IConfig config, T entity) {
         this.config = config;
         this.entity = entity;
         this.load();
