@@ -4,10 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.settingdust.dustdeathpenalty.DustDeathPenalty;
 import com.settingdust.dustdeathpenalty.module.main.MainProvider;
-import com.settingdust.dustdeathpenalty.module.main.entity.ExpEntity;
-import com.settingdust.dustdeathpenalty.module.main.entity.ItemEntity;
-import com.settingdust.dustdeathpenalty.module.main.entity.MainEntity;
-import com.settingdust.dustdeathpenalty.module.main.entity.WorldEntity;
+import com.settingdust.dustdeathpenalty.module.main.entity.*;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.*;
@@ -16,6 +13,9 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.CauseStackManager;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.SpongeEventFactory;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContext;
+import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.entity.DestructEntityEvent;
 import org.spongepowered.api.event.filter.Getter;
 import org.spongepowered.api.event.item.inventory.DropItemEvent;
@@ -24,12 +24,18 @@ import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.item.inventory.entity.PlayerInventory;
+import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.service.economy.Currency;
+import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class DropHandler {
@@ -64,6 +70,33 @@ public class DropHandler {
                 if (expDropConfig.isEnable()) {
                     world.spawnEntity(createExperienceOrb(dropExp, player.getLocation()));
                 }
+
+                EconomyEntity economyConfig = dropConfig.getEconomy();
+                AtomicReference<String> dropMoney = new AtomicReference<>("0");
+                if (economyConfig.isEnable()) {
+                    Optional<EconomyService> serviceOpt = Sponge.getServiceManager().provide(EconomyService.class);
+                    serviceOpt.ifPresent(economyService -> {
+                        economyService.getOrCreateAccount(player.getUniqueId()).ifPresent(uniqueAccount -> {
+                            Currency defaultCurrency = economyService.getDefaultCurrency();
+                            PluginContainer pluginContainer = DustDeathPenalty.getInstance().getPluginContainer();
+                            BigDecimal money;
+                            if (economyConfig.getRate() > 1) {
+                                money = BigDecimal.valueOf(economyConfig.getRate());
+                            } else {
+                                money = uniqueAccount.getBalance(defaultCurrency)
+                                        .multiply(BigDecimal.valueOf(economyConfig.getRate()));
+                            }
+                            uniqueAccount.withdraw(defaultCurrency, money, Cause.of(
+                                    EventContext.builder()
+                                            .add(EventContextKeys.PLUGIN, pluginContainer)
+                                            .build(),
+                                    pluginContainer)
+                            );
+                            dropMoney.set(money + defaultCurrency.getDisplayName().toPlain());
+                        });
+                    });
+                }
+
                 if (dropConfig.isSendMsg()) {
                     List<Text> dropItemTexts = Lists.newArrayList();
                     for (ItemStackSnapshot dropItem : dropItems) {
@@ -76,6 +109,7 @@ public class DropHandler {
                                     .getNode("drop").getString()
                                     .replaceAll("%exp%", String.valueOf(dropExp))
                                     .replaceAll("%item_count%", String.valueOf(dropItems.size()))
+                                    .replaceAll("%money%", dropMoney.get())
                                     .replaceAll("&", "§")
                             ))
                             .onHover(TextActions.showText(Text.joinWith(Text.NEW_LINE, dropItemTexts))).build()

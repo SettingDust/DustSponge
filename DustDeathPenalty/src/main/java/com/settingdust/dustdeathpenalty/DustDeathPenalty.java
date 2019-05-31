@@ -15,6 +15,7 @@ import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.plugin.PluginContainer;
 
 import java.nio.file.Path;
 
@@ -47,6 +48,10 @@ public class DustDeathPenalty {
     private DLocale locale;
     @Getter
     private ProviderManager providerManager;
+
+    @Getter
+    @Inject
+    private PluginContainer pluginContainer;
 
     @Listener
     public void onPreInit(GamePreInitializationEvent event) {

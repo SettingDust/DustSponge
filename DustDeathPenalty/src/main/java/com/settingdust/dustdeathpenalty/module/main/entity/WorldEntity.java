@@ -11,6 +11,8 @@ public class WorldEntity {
     private ItemEntity item = new ItemEntity();
     @Setting
     private ExpEntity exp = new ExpEntity();
+    @Setting
+    private EconomyEntity economy = new EconomyEntity();
     @Setting(comment = "Send the drops to player")
     private boolean isSendMsg = false;
 

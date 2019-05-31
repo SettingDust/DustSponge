@@ -14,7 +14,7 @@ public class ItemEntity {
     private boolean enable = true;
     @Setting(comment = "Is equipment will be dropped")
     private boolean equipment = true;
-    @Setting(comment = "Drop chance")
+    @Setting(comment = "Drop rate")
     private double chance = 0.1D;
     @Setting(comment = "The type don't drop, use /itemdb to get")
     private List<String> whitelist = Lists.newArrayList();
