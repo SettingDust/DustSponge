@@ -22,7 +22,7 @@ import java.nio.file.Path;
 @Plugin(
         id = DustDeathPenalty.ID,
         name = "DustDeathPenalty",
-        version = "1.5",
+        version = "1.6",
         authors = {
                 "SettingDust"
         },

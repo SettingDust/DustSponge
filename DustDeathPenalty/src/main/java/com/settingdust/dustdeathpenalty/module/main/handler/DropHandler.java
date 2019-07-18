@@ -20,6 +20,7 @@ import org.spongepowered.api.event.entity.DestructEntityEvent;
 import org.spongepowered.api.event.filter.Getter;
 import org.spongepowered.api.event.item.inventory.DropItemEvent;
 import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
@@ -35,6 +36,7 @@ import org.spongepowered.api.world.World;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -75,26 +77,24 @@ public class DropHandler {
                 AtomicReference<String> dropMoney = new AtomicReference<>("0");
                 if (economyConfig.isEnable()) {
                     Optional<EconomyService> serviceOpt = Sponge.getServiceManager().provide(EconomyService.class);
-                    serviceOpt.ifPresent(economyService -> {
-                        economyService.getOrCreateAccount(player.getUniqueId()).ifPresent(uniqueAccount -> {
-                            Currency defaultCurrency = economyService.getDefaultCurrency();
-                            PluginContainer pluginContainer = DustDeathPenalty.getInstance().getPluginContainer();
-                            BigDecimal money;
-                            if (economyConfig.getRate() > 1) {
-                                money = BigDecimal.valueOf(economyConfig.getRate());
-                            } else {
-                                money = uniqueAccount.getBalance(defaultCurrency)
-                                        .multiply(BigDecimal.valueOf(economyConfig.getRate()));
-                            }
-                            uniqueAccount.withdraw(defaultCurrency, money, Cause.of(
-                                    EventContext.builder()
-                                            .add(EventContextKeys.PLUGIN, pluginContainer)
-                                            .build(),
-                                    pluginContainer)
-                            );
-                            dropMoney.set(money + defaultCurrency.getDisplayName().toPlain());
-                        });
-                    });
+                    serviceOpt.ifPresent(economyService -> economyService.getOrCreateAccount(player.getUniqueId()).ifPresent(uniqueAccount -> {
+                        Currency defaultCurrency = economyService.getDefaultCurrency();
+                        PluginContainer pluginContainer = DustDeathPenalty.getInstance().getPluginContainer();
+                        BigDecimal money;
+                        if (economyConfig.getRate() > 1) {
+                            money = BigDecimal.valueOf(economyConfig.getRate());
+                        } else {
+                            money = uniqueAccount.getBalance(defaultCurrency)
+                                    .multiply(BigDecimal.valueOf(economyConfig.getRate()));
+                        }
+                        uniqueAccount.withdraw(defaultCurrency, money, Cause.of(
+                                EventContext.builder()
+                                        .add(EventContextKeys.PLUGIN, pluginContainer)
+                                        .build(),
+                                pluginContainer)
+                        );
+                        dropMoney.set(money + defaultCurrency.getDisplayName().toPlain());
+                    }));
                 }
 
                 if (dropConfig.isSendMsg()) {
@@ -164,7 +164,26 @@ public class DropHandler {
         droppedItems.addAll(inventoryDropItems(playerInventory.getHotbar(), itemDropConfig));
         droppedItems.addAll(inventoryDropItems(playerInventory.getMainGrid(), itemDropConfig));
         if (itemDropConfig.isEquipment()) {
-            droppedItems.addAll(inventoryDropItems(playerInventory.getEquipment(), itemDropConfig));
+            droppedItems.addAll(
+                    inventoryDropItems(playerInventory.getEquipment(), itemDropConfig)
+                            .stream()
+                            .filter(itemStackSnapshot -> {
+                                AtomicBoolean result = new AtomicBoolean(false);
+                                itemStackSnapshot
+                                        .get(Keys.ITEM_ENCHANTMENTS)
+                                        .ifPresent(
+                                                enchantments -> result.set(
+                                                        !enchantments
+                                                                .stream()
+                                                                .anyMatch(
+                                                                        enchantment -> enchantment.getType().equals(EnchantmentTypes.BINDING_CURSE)
+                                                                )
+                                                )
+                                        );
+                                return result.get();
+                            })
+                            .collect(Collectors.toList())
+            );
         }
 
         return droppedItems;
